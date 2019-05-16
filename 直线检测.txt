@@ -1,0 +1,31 @@
+i=imread('test1.tif');%sobel
+i1=i(:,:,1);
+BW=edge(i1,'sobel');
+[H,T,R] = hough(BW);%BW,'RhoResolution',0.5,'Theta',-90:0.5:89.5
+RO=edge(i1,'roberts');
+PR=edge(i1,'prewitt');
+P=houghpeaks(H,5);
+lines=houghlines(BW,T,R,P);%ÌáÈ¡Ïß¶Î
+
+figure(1);
+subplot(221)
+imshow(i1);
+title('Ô­Í¼');
+subplot(222)
+imshow(BW);
+title('sobel±ßÔµ¼ì²â');
+subplot(223)
+imshow(RO);
+title('roberts±ßÔµ¼ì²â');
+subplot(224)
+imshow(PR);
+title('prewitt±ßÔµ¼ì²â');
+figure(2);
+imshow(BW),hold on;
+for k = 1:length(lines)
+xy = [lines(k).point1; lines(k).point2];
+ plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');%»­³öÏß¶Î
+plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');%Æðµã
+plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');%ÖÕµã
+end
+
